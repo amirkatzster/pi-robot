@@ -12,4 +12,7 @@ pip install --upgrade google-cloud-translate
 
 #tts
 pip install --upgrade google-cloud-texttospeech
+
+#dialogflow
+pip install dialogflow
  
