@@ -1,1 +1,5 @@
 ffmpeg/*
+Hidden/*
+.env
+.vscode/settings.json
+resources/*
