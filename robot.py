@@ -1,25 +1,48 @@
-from gtts import gTTS
-from io import BytesIO
-from pydub import AudioSegment
-from pydub.playback import play
+from services.tts import tts
+from services.translate import translate
+from services.stt import stt
+from services.record import record
+from services.dialogflow import dialogflow
+from services.play import play
+
+class robot:
+
+    def __init__(self):
+        self.record = record()
+        self.tts = tts()
+        self.translate = translate()
+        self.stt = stt()
+        self.dialogflow = dialogflow()
+        self.play = play()
+
+    def main(self):
+        #loop
+
+        #record
+        record_path = self.record.go()
+        #stt
+        heb_text_list = self.stt.convert(record_path)
+        #translate
+        eng_text_list = []
+        for heb_text in heb_text_list:
+            for alternative in heb_text.alternatives:
+                text = alternative.transcript
+                eng_text_list.append(self.translate.heb_to_eng(text))
+
+        #dialogflow
+        fulfillemnts = self.dialogflow.detect_intent_texts(1,eng_text_list)
+
+        #tts
+        full_text = '. '.join(fulfillemnts)
+        print('robot going to say:')
+        print(full_text)
+        output_path = self.tts.convert(full_text)
+
+        #play mp3
+        self.play.start(output_path)
+        
 
 
-mp3_fp = BytesIO()
-tts = gTTS('I love you Anat. Maybe study instead of dealing with that mess')
-tts.write_to_fp(mp3_fp)
-tts.save('hello.mp3')
-
-# mixer.init()
-# mixer.music.load('hello.mp3')
-# mixer.music.play()
-# mixer.init()
-# mixer.Sound(mp3_fp)
-
-# AudioSegment.converter = 'C:\\dev\\GitHub\\pi-robot\\ffmpeg\\ffmpeg.exe'
-# AudioSegment.ffmpeg = 'C:\\dev\\GitHub\\pi-robot\\ffmpeg\\ffmpeg.exe'
-# song = AudioSegment.from_mp3(StringIO(mp3_fp))
-# play(song)
-
-# from gtts import gTTS
-# tts = gTTS('Im not your fucking servent.. Go take your own water', lang='en')
-# tts.save('hello.mp3')
+if __name__ == "__main__":
+    robot().main()
+    

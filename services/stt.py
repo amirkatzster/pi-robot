@@ -6,10 +6,12 @@ from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
 
-class CloudSpeachToText:
+class stt:
 
-    client = speech.SpeechClient()
-    def Convert(self, file_name):
+    def __init__(self):
+        self.client = speech.SpeechClient()
+
+    def convert(self, file_name):
         # Instantiates a client
         print('client started')
         # The name of the audio file to transcribe

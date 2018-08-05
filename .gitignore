@@ -3,3 +3,4 @@ Hidden/*
 .env
 .vscode/settings.json
 resources/*
+*.pyc 

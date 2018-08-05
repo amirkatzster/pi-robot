@@ -1,9 +1,9 @@
-from google.cloud import translate
+from google.cloud import translate as google_translate
 
-# Instantiates a client
-translate_client = translate.Client()
+class translate:
 
-class TranslateService:
+    def __init__(self):
+        self.translate_client = google_translate.Client()
 
     def heb_to_eng(self, heb_text):
         return self.translate(heb_text,'en')
@@ -13,7 +13,7 @@ class TranslateService:
 
     def translate(self, text, target_code):
         # Translates some text into Russian
-        translation = translate_client.translate(
+        translation = self.translate_client.translate(
             text,
             target_language=target_code)
 
