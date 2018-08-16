@@ -19,7 +19,8 @@ class robot:
         #loop
         while True:
             #record
-            record_path = self.record.go()
+            #record_path = self.record.record_by_seconds()
+            record_path = self.record.record_by_silence()
             #stt
             heb_text_list = self.stt.convert(record_path)
             #translate
@@ -27,6 +28,7 @@ class robot:
             for heb_text in heb_text_list:
                 for alternative in heb_text.alternatives:
                     text = alternative.transcript
+                    print(text[::-1])
                     eng_text_list.append(self.translate.heb_to_eng(text))
 
             #dialogflow
@@ -36,22 +38,28 @@ class robot:
             full_text = '. '.join(fulfillemnts)
             print('robot going to say:')
             print(full_text)
+            heb_response = self.translate.eng_to_heb(full_text)
+            print(heb_response[::-1])
             output_path = self.tts.convert(full_text)
 
             #play mp3
-            self.play.start(output_path
-            )
+            self.play.start(output_path)
 
-            input("Press Enter to continue...")
+            #input("Press Enter to continue...")
     
     def testDialogFlow(self):
         #self.dialogflow.detect_intent_texts(1,['read me a book'])
         self.dialogflow.detect_intent_texts(1,['read me a book','Space book'])
+
+    def testRecord(self):
+        path = self.record.record_by_silence()
+        print(path)
         
 
 
 
 if __name__ == "__main__":
-    robot().testDialogFlow()
-    #robot().main()
+    #robot().testRecord()
+    #robot().testDialogFlow()
+    robot().main()
     
