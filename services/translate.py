@@ -1,3 +1,4 @@
+# pylint: disable=E0401
 from google.cloud import translate as google_translate
 
 class translate:

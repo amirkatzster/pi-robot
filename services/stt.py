@@ -1,6 +1,7 @@
 import io
 import os
 
+# pylint: disable=E0401
 # Imports the Google Cloud client library
 from google.cloud import speech
 from google.cloud.speech import enums

@@ -20,6 +20,7 @@ class dialogflow:
 
         fulfillemnts = []
         for text in texts:
+            # pylint: disable=E1101
             text_input = df.types.TextInput(
                 text=text, language_code=self.language_code)
 
