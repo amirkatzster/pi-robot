@@ -16,7 +16,7 @@ class tts:
         # Names of voices can be retrieved with client.list_voices().
         voice = texttospeech.types.VoiceSelectionParams(
             language_code='en-US',
-            ssml_gender=texttospeech.enums.SsmlVoiceGender.FEMALE)
+            ssml_gender=texttospeech.enums.SsmlVoiceGender.MALE)
 
         audio_config = texttospeech.types.AudioConfig(
             audio_encoding=texttospeech.enums.AudioEncoding.MP3)

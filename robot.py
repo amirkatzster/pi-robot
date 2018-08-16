@@ -17,32 +17,41 @@ class robot:
 
     def main(self):
         #loop
+        while True:
+            #record
+            record_path = self.record.go()
+            #stt
+            heb_text_list = self.stt.convert(record_path)
+            #translate
+            eng_text_list = []
+            for heb_text in heb_text_list:
+                for alternative in heb_text.alternatives:
+                    text = alternative.transcript
+                    eng_text_list.append(self.translate.heb_to_eng(text))
 
-        #record
-        record_path = self.record.go()
-        #stt
-        heb_text_list = self.stt.convert(record_path)
-        #translate
-        eng_text_list = []
-        for heb_text in heb_text_list:
-            for alternative in heb_text.alternatives:
-                text = alternative.transcript
-                eng_text_list.append(self.translate.heb_to_eng(text))
+            #dialogflow
+            fulfillemnts = self.dialogflow.detect_intent_texts(2,eng_text_list)
 
-        #dialogflow
-        fulfillemnts = self.dialogflow.detect_intent_texts(1,eng_text_list)
+            #tts
+            full_text = '. '.join(fulfillemnts)
+            print('robot going to say:')
+            print(full_text)
+            output_path = self.tts.convert(full_text)
 
-        #tts
-        full_text = '. '.join(fulfillemnts)
-        print('robot going to say:')
-        print(full_text)
-        output_path = self.tts.convert(full_text)
+            #play mp3
+            self.play.start(output_path
+            )
 
-        #play mp3
-        self.play.start(output_path)
+            input("Press Enter to continue...")
+    
+    def testDialogFlow(self):
+        #self.dialogflow.detect_intent_texts(1,['read me a book'])
+        self.dialogflow.detect_intent_texts(1,['read me a book','Space book'])
         
 
 
+
 if __name__ == "__main__":
-    robot().main()
+    robot().testDialogFlow()
+    #robot().main()
     

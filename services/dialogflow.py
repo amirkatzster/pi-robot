@@ -1,5 +1,6 @@
 import os
 import dialogflow_v2 as df
+from services.actionHandler import actionHandler
 
 class dialogflow:
     
@@ -35,6 +36,9 @@ class dialogflow:
             print('Fulfillment text: {}\n'.format(
                 response.query_result.fulfillment_text))
             fulfillemnts.append(response.query_result.fulfillment_text)
+            if response.query_result.all_required_params_present == True and response.query_result.action is not None:
+               actionHandler().process(response.query_result.action,response.query_result.parameters)
+               
+               
         return fulfillemnts
 
-   
