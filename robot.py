@@ -38,8 +38,8 @@ class robot:
             full_text = '. '.join(fulfillemnts)
             print('robot going to say:')
             print(full_text)
-            heb_response = self.translate.eng_to_heb(full_text)
-            print(heb_response[::-1])
+            #heb_response = self.translate.eng_to_heb(full_text)
+            #print(heb_response[::-1])
             output_path = self.tts.convert(full_text)
 
             #play mp3
@@ -54,6 +54,10 @@ class robot:
     def testRecord(self):
         path = self.record.record_by_silence()
         print(path)
+
+    def readText(self):
+        output_path = self.tts.convert('Shlvm lchvlm n hrvvvt hchdsh shlchm tm rvtzm shnlch lshchk')
+        self.play.start(output_path)
         
 
 
@@ -61,5 +65,7 @@ class robot:
 if __name__ == "__main__":
     #robot().testRecord()
     #robot().testDialogFlow()
+    #robot().readText()
     robot().main()
+    
     

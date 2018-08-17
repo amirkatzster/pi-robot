@@ -139,15 +139,15 @@ class record:
     def save_speech(self, data, p):
         """ Saves mic data to temporary WAV file. Returns filename of saved 
             file """
-
-        filename = 'resources/output_'+str(int(time.time()))
+        #filename = 'resources/output_'+str(int(time.time()))
+        filename = 'resources/record.wav'
         # writes data to WAV file
         data = b''.join(data)
-        wf = wave.open(filename + '.wav', 'wb')
-        wf.setnchannels(1)
+        wf = wave.open(filename, 'wb')
+        wf.setnchannels(self.CHANNELS)
         wf.setsampwidth(p.get_sample_size(self.FORMAT))
         wf.setframerate(self.RATE)  
         wf.writeframes(data)
         wf.close()
-        return filename + '.wav'
+        return filename
 
