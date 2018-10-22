@@ -1,13 +1,19 @@
+from os.path import join, dirname
+from dotenv import load_dotenv
 from services.tts import tts
 from services.translate import translate
 from services.stt import stt
 from services.record import record
 from services.dialogflow import dialogflow
 from services.play import play
+from espeak import espeak
+
 
 class robot:
 
     def __init__(self):
+        dotenv_path = join(dirname(__file__), '.env')
+        load_dotenv(dotenv_path)
         self.record = record()
         self.tts = tts()
         self.translate = translate()
@@ -40,6 +46,7 @@ class robot:
             print(full_text)
             #heb_response = self.translate.eng_to_heb(full_text)
             #print(heb_response[::-1])
+            #espeak.synth(full_text)
             output_path = self.tts.convert(full_text)
 
             #play mp3

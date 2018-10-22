@@ -9,7 +9,6 @@ class tts:
         self.client = texttospeech.TextToSpeechClient()
 
     def convert(self, text):
-        #input_text = texttospeech.types.SynthesisInput(text=u'שלום לכולם')
         #input_text = texttospeech.types.SynthesisInput(text=u'Hi all testing the voice capabilities')
         input_text = texttospeech.types.SynthesisInput(text=text)
 

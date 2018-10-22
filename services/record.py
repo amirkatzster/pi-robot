@@ -9,7 +9,7 @@ class record:
     CHUNK = 1024
     FORMAT = pyaudio.paInt16
     CHANNELS = 1    
-    RATE = 16000
+    RATE = 48000
     THRESHOLD = 1200  # The threshold intensity that defines silence
                   # and noise signal (an int. lower than THRESHOLD is silence).
     SILENCE_LIMIT = 2  # Silence limit in seconds. The max ammount of seconds where
@@ -24,12 +24,16 @@ class record:
 
     def record_by_seconds(self):
         p = pyaudio.PyAudio()
+        for i in range(p.get_device_count()):
+            dev = p.get_device_info_by_index(i)
+            print((i,dev['name'],dev['maxInputChannels']))
 
         stream = p.open(format=self.FORMAT,
                         channels=self.CHANNELS,
                         rate=self.RATE,
                         input=True,
-                        frames_per_buffer=self.CHUNK)
+                        frames_per_buffer=self.CHUNK,
+                        input_device_index=2)
 
         print("* recording")
 

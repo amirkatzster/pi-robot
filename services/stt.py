@@ -29,12 +29,12 @@ class stt:
 
         config = types.RecognitionConfig(
             encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
-            sample_rate_hertz=16000,
+            sample_rate_hertz=48000,
             language_code='he-IL')
 
         # Detects speech in the audio file
         response = self.client.recognize(config, audio)
         print('response {}'.format(response))
         for result in response.results:
-            print('Transcript: {}'.format(result.alternatives[0].transcript))
+            print('Transcript: {}'.format(result.alternatives[0].transcript.encode('utf-8')))
         return response.results
