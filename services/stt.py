@@ -29,7 +29,7 @@ class stt:
 
         config = types.RecognitionConfig(
             encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
-            sample_rate_hertz=48000,
+            sample_rate_hertz=44000,
             language_code='he-IL')
 
         # Detects speech in the audio file

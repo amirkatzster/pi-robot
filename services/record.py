@@ -4,13 +4,14 @@ import math
 import audioop
 import time
 from collections import deque
+from ctypes import *
 
 class record:
     CHUNK = 1024
     FORMAT = pyaudio.paInt16
     CHANNELS = 1    
-    RATE = 48000
-    THRESHOLD = 1200  # The threshold intensity that defines silence
+    RATE = 44000
+    THRESHOLD = 1700  # The threshold intensity that defines silence
                   # and noise signal (an int. lower than THRESHOLD is silence).
     SILENCE_LIMIT = 2  # Silence limit in seconds. The max ammount of seconds where
                    # only silence is recorded. When this time passes the
@@ -66,9 +67,25 @@ class record:
         how many phrases to process before finishing the listening process 
         (-1 for infinite). 
         """
+        print('loading pyaudio')
+        #Open steam
+        #SWALLOW PI WARNINGS
+        ERROR_HANDLER_FUNC = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
+        
+        def py_error_handler(filename, line, function, err, fmt):
+           do_nothing = 1
 
-        #Open stream
+        c_error_handler = ERROR_HANDLER_FUNC(py_error_handler)
+
+        asound = cdll.LoadLibrary('libasound.so')
+        # Set error handler
+        asound.snd_lib_error_set_handler(c_error_handler)
+        ## END SWALLOW
         p = pyaudio.PyAudio()
+        
+        for i in range(p.get_device_count()):
+            dev = p.get_device_info_by_index(i)
+            print((i,dev['name'],dev['maxInputChannels']))
 
         stream = p.open(format=self.FORMAT,
                         channels=self.CHANNELS,
@@ -88,7 +105,7 @@ class record:
         while (num_phrases == -1 or n > 0):
             cur_data = stream.read(self.CHUNK)
             slid_win.append(math.sqrt(abs(audioop.avg(cur_data, 4))))
-            #print(slid_win[-1])
+            print(slid_win[-1])
             if(sum([x > self.THRESHOLD for x in slid_win]) > 0):
                 if(not started):
                     print("Starting record of phrase")
