@@ -1,5 +1,6 @@
 # pylint: disable=E0401
 from google.cloud import translate as google_translate
+import logging
 
 class translate:
 
@@ -18,6 +19,6 @@ class translate:
             text,
             target_language=target_code)
 
-        print(u'Text: {}'.format(text))
-        print(u'Translation: {}'.format(translation['translatedText']))
+        logging.debug(u'Text: {}'.format(text))
+        logging.debug(u'Translation: {}'.format(translation['translatedText']))
         return translation['translatedText']

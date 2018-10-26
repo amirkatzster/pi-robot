@@ -3,15 +3,17 @@ import wave
 import math
 import audioop
 import time
+import logging
 from collections import deque
-from ctypes import *
+from decorators.profile import profile
+#from ctypes import *
 
 class record:
     CHUNK = 1024
     FORMAT = pyaudio.paInt16
     CHANNELS = 1    
     RATE = 44000
-    THRESHOLD = 1700  # The threshold intensity that defines silence
+    THRESHOLD = 2500  # The threshold intensity that defines silence
                   # and noise signal (an int. lower than THRESHOLD is silence).
     SILENCE_LIMIT = 2  # Silence limit in seconds. The max ammount of seconds where
                    # only silence is recorded. When this time passes the
@@ -23,42 +25,7 @@ class record:
     RECORD_SECONDS = 5
     WAVE_OUTPUT_FILENAME = "resources/recording.wav"
 
-    def record_by_seconds(self):
-        p = pyaudio.PyAudio()
-        for i in range(p.get_device_count()):
-            dev = p.get_device_info_by_index(i)
-            print((i,dev['name'],dev['maxInputChannels']))
-
-        stream = p.open(format=self.FORMAT,
-                        channels=self.CHANNELS,
-                        rate=self.RATE,
-                        input=True,
-                        frames_per_buffer=self.CHUNK,
-                        input_device_index=2)
-
-        print("* recording")
-
-        frames = []
-
-        for i in range(0, int(self.RATE / self.CHUNK * self.RECORD_SECONDS)):
-            data = stream.read(self.CHUNK)
-            frames.append(data)
-
-        print("* done recording")
-
-        stream.stop_stream()
-        stream.close()
-        p.terminate()
-
-        wf = wave.open(self.WAVE_OUTPUT_FILENAME, 'wb')
-        wf.setnchannels(self.CHANNELS)
-        wf.setsampwidth(p.get_sample_size(self.FORMAT))
-        wf.setframerate(self.RATE)
-        wf.writeframes(b''.join(frames))
-        wf.close()
-
-        return self.WAVE_OUTPUT_FILENAME
-
+    @profile
     def record_by_silence(self, threshold=THRESHOLD, num_phrases=1):
         """
         Listens to Microphone, extracts phrases from it and sends it to 
@@ -82,10 +49,6 @@ class record:
         #asound.snd_lib_error_set_handler(c_error_handler)
         ## END SWALLOW
         p = pyaudio.PyAudio()
-        
-        for i in range(p.get_device_count()):
-            dev = p.get_device_info_by_index(i)
-            print((i,dev['name'],dev['maxInputChannels']))
 
         stream = p.open(format=self.FORMAT,
                         channels=self.CHANNELS,
@@ -93,10 +56,10 @@ class record:
                         input=True,
                         frames_per_buffer=self.CHUNK)
 
-        print("* Listening mic. ")
+        logging.info('* Listening mic. ')
         audio2send = []
         cur_data = ''  # current chunk  of audio data
-        rel = self.RATE/self.CHUNK
+        rel = 16000/self.CHUNK#self.RATE/self.CHUNK
         slid_win = deque(maxlen=int(self.SILENCE_LIMIT * rel))
         #Prepend audio from 0.5 seconds before noise was detected
         prev_audio = deque(maxlen=int(self.PREV_AUDIO * rel))
@@ -105,14 +68,15 @@ class record:
         while (num_phrases == -1 or n > 0):
             cur_data = stream.read(self.CHUNK)
             slid_win.append(math.sqrt(abs(audioop.avg(cur_data, 4))))
-            print(slid_win[-1])
+            #print(slid_win[-1])
+            print(sum([x > self.THRESHOLD for x in slid_win]))
             if(sum([x > self.THRESHOLD for x in slid_win]) > 0):
                 if(not started):
-                    print("Starting record of phrase")
+                    logging.debug('Starting record of phrase')
                     started = True
                 audio2send.append(cur_data)
             elif (started is True):
-                print("Finished")
+                logging.debug('Finished')
                 # The limit was reached, finish capture and deliver.
                 filename = self.save_speech(list(prev_audio) + audio2send, p)
                 # Reset all
@@ -124,7 +88,7 @@ class record:
             else:
                 prev_audio.append(cur_data)
 
-        print("* Done recording")
+        logging.info('* Done recording')
         stream.close()
         p.terminate()
 

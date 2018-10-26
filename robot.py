@@ -1,13 +1,15 @@
 from os.path import join, dirname
 from dotenv import load_dotenv
 from services.tts import tts
+from services.htts import htts
 from services.translate import translate
 from services.stt import stt
 from services.record import record
 from services.dialogflow import dialogflow
 from services.play import play
-from espeak import espeak
-
+import logging
+import sys
+import time
 
 class robot:
 
@@ -16,12 +18,24 @@ class robot:
         load_dotenv(dotenv_path)
         self.record = record()
         self.tts = tts()
+        self.htts = htts()
         self.translate = translate()
         self.stt = stt()
         self.dialogflow = dialogflow()
         self.play = play()
+    
+    def setLogger(self):
+        root = logging.getLogger()
+        root.setLevel(logging.DEBUG)
+        ch = logging.StreamHandler(sys.stdout)
+        ch.setLevel(logging.DEBUG)
+        #formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        formatter = logging.Formatter('%(asctime)s - %(message)s')
+        ch.setFormatter(formatter)
+        root.addHandler(ch)
 
     def main(self):
+        self.setLogger()
         #loop
         while True:
             #record
@@ -30,11 +44,16 @@ class robot:
             #stt
             heb_text_list = self.stt.convert(record_path)
             #translate
+            if not heb_text_list:
+                output_path = self.htts.convert('לא שמעתי. אתה יכול לחזור.')
+                self.play.start(output_path)
+                logging.debug('I hear silent.. Speak louder')
+                continue
             eng_text_list = []
             for heb_text in heb_text_list:
                 for alternative in heb_text.alternatives:
                     text = alternative.transcript
-                    print(text[::-1])
+                    logging.debug(text[::-1])
                     eng_text_list.append(self.translate.heb_to_eng(text))
 
             #dialogflow
@@ -42,12 +61,15 @@ class robot:
 
             #tts
             full_text = '. '.join(fulfillemnts)
-            print('robot going to say:')
-            print(full_text)
-            #heb_response = self.translate.eng_to_heb(full_text)
-            #print(heb_response[::-1])
+            logging.debug('robot going to say:')
+            logging.debug('full_text')
+            heb_response = self.translate.eng_to_heb(full_text)
+            print(heb_response[::-1])
+            
+            #migth be time optimization... To use synth voice.. 
             #espeak.synth(full_text)
-            output_path = self.tts.convert(full_text)
+            #output_path = self.tts.convert(full_text)
+            output_path = self.htts.convert(heb_response)
 
             #play mp3
             self.play.start(output_path)
@@ -65,6 +87,13 @@ class robot:
     def readText(self):
         output_path = self.tts.convert('Shlvm lchvlm n hrvvvt hchdsh shlchm tm rvtzm shnlch lshchk')
         self.play.start(output_path)
+
+    def readTextHeb(self):
+        
+        output_path = self.htts.convert('')
+        #output_path = 'resources/output.mp3'
+        self.play.start(output_path)
+        time.sleep(10)
         
 
 
@@ -73,6 +102,7 @@ if __name__ == "__main__":
     #robot().testRecord()
     #robot().testDialogFlow()
     #robot().readText()
+    #robot().readTextHeb()
     robot().main()
     
     
