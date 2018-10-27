@@ -5,8 +5,9 @@ from services.actionHandler import actionHandler
 
 class dialogflow:
     
-    project_id = os.environ['DIALOG_FLOW_PROJECT_ID']
-    language_code = 'en-US'
+    def __init__(self):
+        self.project_id = os.getenv('DIALOG_FLOW_PROJECT_ID')
+        self.language_code = 'en-US'
 
     # detect_intent_texts('1',['How old are you?'])
     def detect_intent_texts(self, session_id, texts):

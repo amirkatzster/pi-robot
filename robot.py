@@ -1,5 +1,5 @@
 from os.path import join, dirname
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv 
 from services.tts import tts
 from services.htts import htts
 from services.translate import translate
@@ -11,12 +11,14 @@ from services.led import led
 import logging
 import sys
 import time
+import os
 
 class robot:
 
     def __init__(self):
         dotenv_path = join(dirname(__file__), '.env')
         load_dotenv(dotenv_path)
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
         self.record = record()
         self.tts = tts()
         self.htts = htts()
@@ -42,7 +44,6 @@ class robot:
         while True:
             self.led.turnRedOff()
             #record
-            #record_path = self.record.record_by_seconds()
             record_path = self.record.record_by_silence()
             self.led.turnRedOn()
             #stt
@@ -78,7 +79,6 @@ class robot:
             #play mp3
             self.play.start(output_path)
             time.sleep(3)
-            #input("Press Enter to continue...")
     
     def testDialogFlow(self):
         #self.dialogflow.detect_intent_texts(1,['read me a book'])
