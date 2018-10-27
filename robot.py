@@ -7,6 +7,7 @@ from services.stt import stt
 from services.record import record
 from services.dialogflow import dialogflow
 from services.play import play
+from services.led import led
 import logging
 import sys
 import time
@@ -22,7 +23,8 @@ class robot:
         self.translate = translate()
         self.stt = stt()
         self.dialogflow = dialogflow()
-        self.play = play()
+       	self.play = play()
+        self.led = led()
     
     def setLogger(self):
         root = logging.getLogger()
@@ -38,9 +40,11 @@ class robot:
         self.setLogger()
         #loop
         while True:
+            self.led.turnRedOff()
             #record
             #record_path = self.record.record_by_seconds()
             record_path = self.record.record_by_silence()
+            self.led.turnRedOn()
             #stt
             heb_text_list = self.stt.convert(record_path)
             #translate

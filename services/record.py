@@ -69,7 +69,7 @@ class record:
             cur_data = stream.read(self.CHUNK)
             slid_win.append(math.sqrt(abs(audioop.avg(cur_data, 4))))
             #print(slid_win[-1])
-            print(sum([x > self.THRESHOLD for x in slid_win]))
+            #print(sum([x > self.THRESHOLD for x in slid_win]))
             if(sum([x > self.THRESHOLD for x in slid_win]) > 0):
                 if(not started):
                     logging.debug('Starting record of phrase')

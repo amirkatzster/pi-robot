@@ -31,7 +31,7 @@ class dialogflow:
                 session=session, query_input=query_input)
 
             logging.debug('=' * 20)
-            logging.debug('Query text: {}'.format(response.query_result.query_text))
+            logging.debug('Query text: {}'.format(response.query_result.query_text.encode('utf-8')))
             logging.debug('Detected intent: {} (confidence: {})\n'.format(
                 response.query_result.intent.display_name,
                 response.query_result.intent_detection_confidence))
