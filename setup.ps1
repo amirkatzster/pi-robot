@@ -1,6 +1,7 @@
  pip install gTTS
  pip install urllib3
  pip install pydub
+ pip install python-dotenv
 
 #record
 python -m pip install pyaudio
