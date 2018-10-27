@@ -45,7 +45,7 @@ class robot:
             heb_text_list = self.stt.convert(record_path)
             #translate
             if not heb_text_list:
-                output_path = self.htts.convert('לא שמעתי. אתה יכול לחזור.')
+                output_path = self.htts.convert('')
                 self.play.start(output_path)
                 logging.debug('I hear silent.. Speak louder')
                 continue
@@ -73,7 +73,7 @@ class robot:
 
             #play mp3
             self.play.start(output_path)
-
+            time.sleep(3)
             #input("Press Enter to continue...")
     
     def testDialogFlow(self):

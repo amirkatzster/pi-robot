@@ -7,9 +7,9 @@ PROF_DATA = {}
 def profile(fn):
 
     def with_profiling(*args, **kwargs):
-        start_time = time.perf_counter()
+        start_time = time.time()
         ret = fn(*args, **kwargs)
-        elapsed_time = time.perf_counter() - start_time
+        elapsed_time = time.time() - start_time
 
         if fn.__name__ not in PROF_DATA:
             PROF_DATA[fn.__name__] = [0, []]
