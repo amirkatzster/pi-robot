@@ -3,6 +3,7 @@
  pip install urllib3
  pip install pydub
 
+ pip install pafy
 pip install -U python-dotenv
 
 #record

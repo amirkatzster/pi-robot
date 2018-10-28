@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # pylint: disable=E0401
 import logging
 from google.cloud import texttospeech

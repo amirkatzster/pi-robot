@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from os.path import join, dirname
 from dotenv import load_dotenv, find_dotenv 
 from services.tts import tts
@@ -8,6 +9,7 @@ from services.record import record
 from services.dialogflow import dialogflow
 from services.play import play
 from services.led import led
+from services.youtube import youtube
 import logging
 import sys
 import time
@@ -27,6 +29,7 @@ class robot:
         self.dialogflow = dialogflow()
        	self.play = play()
         self.led = led()
+        self.youtube = youtube()
     
     def setLogger(self):
         root = logging.getLogger()
@@ -48,11 +51,13 @@ class robot:
             self.led.turnRedOn()
             #stt
             heb_text_list = self.stt.convert(record_path)
+            print('stt output: {}'.format(heb_text_list))
             #translate
             if not heb_text_list:
-                output_path = self.htts.convert('')
+                output_path = self.htts.convert(u'לא שמעתי')
                 self.play.start(output_path)
                 logging.debug('I hear silent.. Speak louder')
+                time.sleep(3)
                 continue
             eng_text_list = []
             for heb_text in heb_text_list:
@@ -92,12 +97,16 @@ class robot:
         output_path = self.tts.convert('Shlvm lchvlm n hrvvvt hchdsh shlchm tm rvtzm shnlch lshchk')
         self.play.start(output_path)
 
-    def readTextHeb(self):
-        
+    def readTextHeb(self):  
         output_path = self.htts.convert('')
         #output_path = 'resources/output.mp3'
         self.play.start(output_path)
         time.sleep(10)
+
+    def playSong(self):       
+        self.youtube.play_url('https://www.youtube.com/watch?v=NvZtkt9973A')
+        #time.sleep(10)
+    
         
 
 
@@ -107,6 +116,7 @@ if __name__ == "__main__":
     #robot().testDialogFlow()
     #robot().readText()
     #robot().readTextHeb()
+    #robot().playSong()
     robot().main()
     
     
