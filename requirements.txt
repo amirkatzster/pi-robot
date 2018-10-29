@@ -58,7 +58,6 @@ PyAudio==0.2.11
 pycrypto==2.6.1
 pydub==0.23.0
 pygame==1.9.3
-pygobject==3.22.0
 pyinotify==0.9.6
 PyJWT==1.4.2
 pyOpenSSL==16.2.0
