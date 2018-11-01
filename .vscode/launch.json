@@ -99,7 +99,7 @@
             "pythonPath": "${config:python.pythonPath}",
             "program": "${file}",
             "env": {
-                "VAR1": "1",
+                "PYTHONPATH": "c:\\dev\\GitHub\\pi-robot",
                 "VAR2": "2"
             },
             "debugOptions": [

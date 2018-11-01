@@ -1,6 +1,6 @@
 import unittest
 
-class test_robot(unittest.TestCase):
+class test_record(unittest.TestCase):
     
     def test(self):
         self.assertEqual(3,3)
