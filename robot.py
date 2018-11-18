@@ -103,9 +103,10 @@ class robot:
         self.play.start(output_path)
         time.sleep(10)
 
-    def playSong(self):       
-        self.youtube.play_url('https://www.youtube.com/watch?v=NvZtkt9973A')
-        #time.sleep(10)
+    def playSong(self):
+        self.play.start('resources/morning.mp3')       
+        #self.youtube.play_url('https://www.youtube.com/watch?v=NvZtkt9973A')
+        time.sleep(1000)
     
         
 
