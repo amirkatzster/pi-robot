@@ -9,6 +9,7 @@ from services.record import record
 from services.dialogflow import dialogflow
 from services.play import play
 from services.led import led
+from services.arduino import arduino
 from services.youtube import youtube
 import logging
 import sys
@@ -30,6 +31,7 @@ class robot:
        	self.play = play()
         self.led = led()
         self.youtube = youtube()
+        self.arduino = arduino()
     
     def setLogger(self):
         root = logging.getLogger()
@@ -107,6 +109,14 @@ class robot:
         self.play.start('resources/morning.mp3')       
         #self.youtube.play_url('https://www.youtube.com/watch?v=NvZtkt9973A')
         time.sleep(1000)
+
+    def sayYesNo(self):
+        while 1:
+            self.arduino.sayYes()
+            time.sleep(3000)
+            self.arduino.sayNo()
+            time.sleep(3000)
+
     
         
 
@@ -118,6 +128,7 @@ if __name__ == "__main__":
     #robot().readText()
     #robot().readTextHeb()
     #robot().playSong()
-    robot().main()
+    robot().sayYesNo()
+    #robot().main()
     
     
