@@ -112,10 +112,14 @@ class robot:
 
     def sayYesNo(self):
         while 1:
+	    print('1')
             self.arduino.sayYes()
-            time.sleep(3000)
+	    print('2')
+            time.sleep(5)
+	    print('3')
             self.arduino.sayNo()
-            time.sleep(3000)
+            print('4')
+            time.sleep(5)
 
     
         
@@ -128,7 +132,7 @@ if __name__ == "__main__":
     #robot().readText()
     #robot().readTextHeb()
     #robot().playSong()
-    robot().sayYesNo()
-    #robot().main()
+    #robot().sayYesNo()
+    robot().main()
     
     
