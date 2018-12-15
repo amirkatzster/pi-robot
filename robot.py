@@ -103,7 +103,7 @@ class robot:
         output_path = self.htts.convert(unicode('מזל טוב לסתיו המתוקה. וגם יום הולדת אדיר לגפן המקסימה. אני רובוט עץ חבר שלכם מאחל לכן יום הולדת שמח עם המון בלונים שירים גלידה וניל וגלידה שוקולד. שכל משאלות לבכן תתגשמנה. אוהב אותכם המון','utf-8'))
         #output_path = 'resources/output.mp3'
         self.play.start(output_path)
-        time.sleep(10)
+        time.sleep(15)
 
     def playSong(self):
         self.readTextHeb()
@@ -112,7 +112,8 @@ class robot:
         self.sayYesNo()
 
     def sayYesNo(self):
-        while 1:
+        i = 0
+        while i < 10:
 	    print('1')
             self.arduino.sayYes()
 	    print('2')
@@ -121,6 +122,7 @@ class robot:
             self.arduino.sayNo()
             print('4')
             time.sleep(5)
+            i = i + 1
 
     
         
@@ -132,8 +134,8 @@ if __name__ == "__main__":
     #robot().testDialogFlow()
     #robot().readText()
     #robot().readTextHeb()
-    robot().playSong()
+    #robot().playSong()
     #robot().sayYesNo()
-    #robot().main()
+    robot().main()
     
     
