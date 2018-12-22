@@ -1,9 +1,9 @@
 #!/bin/sh
- pip install gTTS
- pip install urllib3
- pip install pydub
+pip install gTTS
+pip install urllib3
+pip install pydub
 
- pip install pafy
+pip install pafy
 pip install -U python-dotenv
 
 #record
@@ -28,3 +28,14 @@ pip install python-vlc
 
 sudo apt-get install espeak
 sudo apt-get install espeak python-espeak
+
+#rabbitMq 
+pip install pika
+apt-get install –y erlang logrotate
+apt-get -f install
+wget https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.7.9/rabbitmq-server_3.7.9-1_all.deb
+dpkg -i rabbitmq-server_3.7.9-1_all.deb
+sudo rabbitmq-plugins enable rabbitmq_management
+sudo rabbitmqctl add_user rabbituser 123456
+sudo rabbitmqctl set_user_tags  rabbituser administrator
+sudo rabbitmqctl set_permissions -p / rabbituser ".*" ".*" ".*"

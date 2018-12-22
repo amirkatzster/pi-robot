@@ -49,17 +49,19 @@ class robot:
         while True:
             self.led.turnRedOff()
             #record
+            # todo: not record while speaking
             record_path = self.record.record_by_silence()
             self.led.turnRedOn()
             #stt
             heb_text_list = self.stt.convert(record_path)
-            print('stt output: {}'.format(heb_text_list))
+            logging.info('input text: {}'.format(heb_text_list))
             #translate
+            # todo: cache it
             if not heb_text_list:
-                output_path = self.htts.convert(u'לא שמעתי')
+                output_path = self.htts.convert(u'מה')
                 self.play.start(output_path)
                 logging.debug('I hear silent.. Speak louder')
-                time.sleep(3)
+                time.sleep(1)
                 continue
             eng_text_list = []
             for heb_text in heb_text_list:
@@ -68,10 +70,12 @@ class robot:
                     logging.debug(text[::-1])
                     eng_text_list.append(self.translate.heb_to_eng(text))
 
-            #dialogflow
+            #dialogflow 
+            # todo: Can't cache.... but need to handle session
             fulfillemnts = self.dialogflow.detect_intent_texts(2,eng_text_list)
 
             #tts
+            #todo: Add Cache
             full_text = '. '.join(fulfillemnts)
             logging.debug('robot going to say:')
             logging.debug('full_text')
@@ -82,7 +86,7 @@ class robot:
             #espeak.synth(full_text)
             #output_path = self.tts.convert(full_text)
             output_path = self.htts.convert(heb_response)
-
+            #todo: Add cache
             #play mp3
             self.play.start(output_path)
             time.sleep(3)

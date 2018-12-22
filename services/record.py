@@ -125,8 +125,8 @@ class record:
     def save_speech(self, data, p):
         """ Saves mic data to temporary WAV file. Returns filename of saved 
             file """
-        #filename = 'resources/output_'+str(int(time.time()))
-        filename = 'resources/record.wav'
+        filename = 'resources/records/output_'+str(int(time.time()))
+        #filename = 'resources/record.wav'
         # writes data to WAV file
         data = b''.join(data)
         wf = wave.open(filename, 'wb')

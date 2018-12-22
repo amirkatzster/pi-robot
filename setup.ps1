@@ -11,7 +11,7 @@ python -m pip install pyaudio
 #stt
 pip install --upgrade google-cloud-speech
 $env:GOOGLE_APPLICATION_CREDENTIALS="$((Get-Item -Path ".\").FullName)\Hidden\robot-pi-d6c05e651bc4.json"
-
+$env:PYTHONPATH=c:\dev\GitHub\pi-robot
 
 #translate
 pip install --upgrade google-cloud-translate
