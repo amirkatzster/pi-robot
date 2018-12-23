@@ -2,15 +2,21 @@ import logging
 import pika
 from services.queue import queue
 from services.dialogflow import dialogflow
+from services.logger import setLogger
+from os.path import join, dirname
+from dotenv import load_dotenv, find_dotenv 
 import os, shutil
 
 class dialogFlowService:
 
-    EXCHANGE_NAME = 'robo-pi' 
+    EXCHANGE_NAME = '' 
     QUEUE_NAME = 'dialogFlowService'
 
     def __init__(self):
-        print(type(self).__name__)
+        setLogger('dialogFlowService')
+        dotenv_path = '.env'
+        load_dotenv(dotenv_path)
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
         self.queue = queue()
         self.channel = self.queue.createChannel()
         self.channel.queue_declare(queue=self.QUEUE_NAME)
@@ -29,9 +35,10 @@ class dialogFlowService:
         # caching needed
         texts = []
         texts.append(body)
+        logging.info('[-] {}'.format(texts))
         fulfillemnts = self.dialogflow.detect_intent_texts(2,texts)
         full_text = '. '.join(fulfillemnts)
-        logging.info(full_text)
+        logging.info('[+] {}'.format(full_text))
         self.channel.basic_publish(self.EXCHANGE_NAME,'translateServiceE2H',full_text)
 
 

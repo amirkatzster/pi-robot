@@ -1,17 +1,24 @@
+# -*- coding: utf-8 -*-
 import logging
+from os.path import join, dirname
+from dotenv import load_dotenv, find_dotenv 
 import pika
 from services.queue import queue
 from services.translate import translate
+from services.logger import setLogger
 import os, shutil
 
 class translateService:
 
-    EXCHANGE_NAME = 'robo-pi' 
+    EXCHANGE_NAME = '' 
     QUEUE_NAME_H2E = 'translateServiceH2E'
     QUEUE_NAME_E2H = 'translateServiceE2H'
 
     def __init__(self):
-        print(type(self).__name__)
+        setLogger('translateService')
+        dotenv_path = '.env'
+        load_dotenv(dotenv_path)
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
         self.queue = queue()
         self.channel = self.queue.createChannel()
         self.channel.queue_declare(queue=self.QUEUE_NAME_H2E)
@@ -34,14 +41,17 @@ class translateService:
 
     def callback_h2e(self, ch, method, properties, body):
         # caching needed
+        logging.info('[-h2e] {}'.format(body))
         eng_text = self.translate.heb_to_eng(body)
+        logging.info('[+h2e] {}'.format(eng_text))
         self.channel.basic_publish(self.EXCHANGE_NAME,'dialogFlowService',eng_text)
 
 
     def callback_e2h(self, ch, method, properties, body):
         #caching
+        logging.info('[-e2h] {}'.format(body))
         heb_text = self.translate.eng_to_heb(body)
-        logging.info(heb_text[::-1])
+        logging.info('[+e2h] {}'.format(heb_text[::-1].encode('utf-8')))
         self.channel.basic_publish(self.EXCHANGE_NAME,'HebTextToSpeachService',heb_text)
 
 

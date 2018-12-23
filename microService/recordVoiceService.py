@@ -24,13 +24,13 @@ class recordVoiceService:
         self.record = record()
         self.queue = queue()
         self.channel = self.queue.createChannel()
-        self.channel.queue_declare(queue=self.QUEUE_NAME)
+        #self.channel.queue_declare(queue=self.QUEUE_NAME)
         # todo delete record folder
         self.deletePreviousRecords()
         # log to rabbit
-        self.channel.basic_consume(self.callback,
-                      queue=self.QUEUE_NAME,
-                      no_ack=True)
+        #self.channel.basic_consume(self.callback,
+        #              queue=self.QUEUE_NAME,
+        #              no_ack=True)
         
        
         
@@ -39,7 +39,8 @@ class recordVoiceService:
             logging.info('---starting to record---')
             outputPath = self.record.record_by_silence()
             logging.info('---done recording---')
-            self.channel.basic_publish(self.EXCHANGE_NAME,'speachToTextService',outputPath)
+            channel = self.queue.createChannel()
+            channel.basic_publish(self.EXCHANGE_NAME,'speachToTextService',outputPath)
 
 
 

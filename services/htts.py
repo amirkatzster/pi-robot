@@ -10,7 +10,7 @@ class htts:
     OUTPUT_PATH = 'resources/output.mp3'
 
     def convert(self, text):
-        url = '{}{}'.format(os.environ['HTTS_URL'],text.encode('utf-8')) 
+        url = '{}{}'.format(os.environ['HTTS_URL'],text) 
         res = requests.get(url)
 
         # The response's audio_content is binary.
