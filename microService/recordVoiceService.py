@@ -1,5 +1,6 @@
 import logging
 import pika
+import sys
 from services.record import record
 from services.queue import queue
 import os, shutil
@@ -7,11 +8,19 @@ import os, shutil
 class recordVoiceService:
 
     RECORDING_FOLDER = 'resources/records' 
-    EXCHANGE_NAME = 'robo-pi' 
+    EXCHANGE_NAME = '' 
     QUEUE_NAME = 'recordVoiceService'
     shouldRecord = True
 
     def __init__(self):
+        root = logging.getLogger()
+        root.setLevel(logging.DEBUG)
+        ch = logging.StreamHandler(sys.stdout)
+        ch.setLevel(logging.DEBUG)
+        handler = logging.FileHandler('logs/recordVoiceService.log')
+        handler.setLevel(logging.INFO)
+        root.addHandler(ch)
+        root.addHandler(handler)
         self.record = record()
         self.queue = queue()
         self.channel = self.queue.createChannel()
@@ -27,8 +36,10 @@ class recordVoiceService:
         
     def run(self): 
         while (self.shouldRecord):     
+            logging.info('---starting to record---')
             outputPath = self.record.record_by_silence()
-            self.channel.basic_publish(self.EXCHANGE_NAME,'textToSpeachService',outputPath)
+            logging.info('---done recording---')
+            self.channel.basic_publish(self.EXCHANGE_NAME,'speachToTextService',outputPath)
 
 
 
@@ -49,13 +60,7 @@ class recordVoiceService:
 
 
 if __name__ == "__main__":
-    # try:
-        recordVoiceService().run()
-    # except:
-    #     logging.error('voice record service crashed :(',exc_info=True)
-        
-        
-
+    recordVoiceService().run()
 
 
 
