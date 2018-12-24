@@ -42,22 +42,22 @@ class translateService:
     def callback_h2e(self, ch, method, properties, body):
         cacheKey = 'H2E|{}'.format(body)
         eng_text = self.cache.get(cacheKey)
+        logging.info('[-h2e] {}'.format(body))
         if (eng_text):
             logging.info('use cache')
         else:
-            logging.info('[-h2e] {}'.format(body))
+            eng_text = self.translate.heb_to_eng(body)
             logging.info('[+h2e] {}'.format(eng_text))
-            self.cache.set(cacheKey, eng_text)
         self.channel.basic_publish(self.EXCHANGE_NAME,'dialogFlowService',eng_text)
-        eng_text = self.translate.heb_to_eng(body)
+        self.cache.set(cacheKey, eng_text)
 
     def callback_e2h(self, ch, method, properties, body):
         cacheKey = 'E2H|{}'.format(body)
         heb_text = self.cache.get(cacheKey)
+        logging.info('[-e2h] {}'.format(body))
         if (heb_text):
             logging.info('use cache')
         else:
-            logging.info('[-e2h] {}'.format(body))
             heb_text = self.translate.eng_to_heb(body)
             logging.info('[+e2h] {}'.format(heb_text[::-1].encode('utf-8')))
         self.channel.basic_publish(self.EXCHANGE_NAME,'HebTextToSpeachService',heb_text)
