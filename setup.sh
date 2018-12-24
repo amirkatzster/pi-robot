@@ -41,3 +41,6 @@ sudo rabbitmq-plugins enable rabbitmq_management
 sudo rabbitmqctl add_user rabbituser 123456
 sudo rabbitmqctl set_user_tags  rabbituser administrator
 sudo rabbitmqctl set_permissions -p / rabbituser ".*" ".*" ".*"
+*redis*
+sudo apt-get install redis-server
+pip install redis

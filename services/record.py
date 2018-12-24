@@ -14,7 +14,7 @@ class record:
     CHANNELS = 1    
     RATE = 44000
     RATE_WAV = 44000
-    THRESHOLD = 1600  # The threshold intensity that defines silence
+    THRESHOLD = 1700  # The threshold intensity that defines silence
                   # and noise signal (an int. lower than THRESHOLD is silence).
     SILENCE_LIMIT = 2  # Silence limit in seconds. The max ammount of seconds where
                    # only silence is recorded. When this time passes the
