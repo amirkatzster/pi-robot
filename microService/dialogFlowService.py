@@ -6,6 +6,8 @@ from services.logger import setLogger
 from os.path import join, dirname
 from dotenv import load_dotenv, find_dotenv 
 import os, shutil
+from datetime import datetime
+import uuid
 
 class dialogFlowService:
 
@@ -24,7 +26,8 @@ class dialogFlowService:
                       queue=self.QUEUE_NAME,
                       no_ack=True)
         self.dialogflow = dialogflow()
-        
+        self.sessionLast = datetime.now()
+        self.sessionId = str(uuid.uuid4()))
         
     def run(self):
         print(' [*] Waiting for messages. To exit press CTRL+C')
@@ -36,11 +39,23 @@ class dialogFlowService:
         texts = []
         texts.append(body)
         logging.info('[-] {}'.format(texts))
-        fulfillemnts = self.dialogflow.detect_intent_texts(2,texts)
-        full_text = '. '.join(fulfillemnts)
-        logging.info('[+] {}'.format(full_text))
+        res = self.dialogflow.detect_intent_texts(getSessionId(),texts)
+        full_text = '. '.join(res["say"])
+        logging.info('[+say] {}'.format(full_text))
         self.channel.basic_publish(self.EXCHANGE_NAME,'translateServiceE2H',full_text)
+        if (res["action"]):
+            logging.info('[+action] {}'.format(res["action"]))
+            self.channel.basic_publish(self.EXCHANGE_NAME, 'actionService',res["action"])
 
+    def getSessionId(self):
+        now = datetime.now()
+        elapsed = now - self.sessionLast
+        # after 2 minutes of non talking start new session
+        if (elapsed > datetime.timedelta(minutes=2)):
+            self.sessionId = str(uuid.uuid4()))
+        return self.sessionId
+
+        
 
 
 if __name__ == "__main__":

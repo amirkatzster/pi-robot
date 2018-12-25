@@ -19,8 +19,8 @@ class dialogflow:
 
         session = session_client.session_path(self.project_id, session_id)
         logging.debug('Session path: {}\n'.format(session))
-
-        fulfillemnts = []
+        res = {}
+        res["say"] = []
         for text in texts:
             # pylint: disable=E1101
             text_input = df.types.TextInput(
@@ -31,17 +31,14 @@ class dialogflow:
             response = session_client.detect_intent(
                 session=session, query_input=query_input)
 
-            logging.debug('=' * 20)
             logging.debug('Query text: {}'.format(response.query_result.query_text.encode('utf-8')))
             logging.debug('Detected intent: {} (confidence: {})\n'.format(
                 response.query_result.intent.display_name,
                 response.query_result.intent_detection_confidence))
-            logging.debug('Fulfillment text: {}\n'.format(
-                response.query_result.fulfillment_text))
-            fulfillemnts.append(response.query_result.fulfillment_text)
+            logging.debug('Fulfillment text: {}\n'.format(response.query_result.fulfillment_text))
+            res["say"].append(fulfillment response.query_result.fulfillment_text)
             if response.query_result.all_required_params_present == True and response.query_result.action is not None:
-               actionHandler().process(response.query_result.action,response.query_result.parameters)
-               
-               
-        return fulfillemnts
+              res["action"] = (response.query_result.action,response.query_result.parameters)
+                       
+        return res
 
