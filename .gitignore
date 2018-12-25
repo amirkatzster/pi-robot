@@ -5,3 +5,5 @@ logs/*
 .vscode/settings.json
 resources/*
 *.pyc 
+.vscode/.ropeproject/config.py
+.vscode/.ropeproject/config.py
