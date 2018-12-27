@@ -44,3 +44,6 @@ sudo rabbitmqctl set_permissions -p / rabbituser ".*" ".*" ".*"
 *redis*
 sudo apt-get install redis-server
 pip install redis
+
+#OpenCV 4
+#Instructions here: https://www.pyimagesearch.com/2018/09/26/install-opencv-4-on-your-raspberry-pi/

@@ -22,7 +22,7 @@ class actionService:
         self.channel.basic_consume(self.callback,
                       queue=self.QUEUE_NAME,
                       no_ack=True)
-        self.actionHandler = actionHandler
+        self.actionHandler = actionHandler()
         
     def run(self):
         print(' [*] Waiting for messages. To exit press CTRL+C')
@@ -31,8 +31,9 @@ class actionService:
 
     def callback(self, ch, method, properties, body):
         logging.info('[-] {}'.format(body))
-        action = body
-        actionHandler.process(action[0],action[1])
+        action = body.split('|')
+        logging.info(action)
+        self.actionHandler.process(action[0],action[1])
 
 if __name__ == "__main__":
     actionService().run()

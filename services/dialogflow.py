@@ -36,9 +36,10 @@ class dialogflow:
                 response.query_result.intent.display_name,
                 response.query_result.intent_detection_confidence))
             logging.debug('Fulfillment text: {}\n'.format(response.query_result.fulfillment_text))
-            res["say"].append(fulfillment response.query_result.fulfillment_text)
+            res["say"].append(response.query_result.fulfillment_text)
             if response.query_result.all_required_params_present == True and response.query_result.action is not None:
-              res["action"] = (response.query_result.action,response.query_result.parameters)
+                res["action"] = '{}|{}'.format(response.query_result.action,response.query_result.parameters)
+                logging.info(res["action"])
                        
         return res
 

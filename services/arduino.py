@@ -10,23 +10,27 @@ class arduino:
     def __init__(self):
         self.bus = smbus.SMBus(1)
         self.address = 0x04
+
+    def send(self, num):
+	self.bus.write_byte(self.address, num)
 ##### Head ########
     def sayNo(self):
         #gpio.output(17, True)
-	    print('going to say no')
-        self.bus.write_byte(self.address, 0)
-	    print('saying no')
+        print('going to say no')
+        self.bus.write_byte(self.address, 2)
+	print('saying no')
 
     def sayYes(self):
         self.bus.write_byte(self.address, 1)
 
     def LookRight(self):
-        self.bus.write_byte(self.address, 2)
-
-    def LookLeft(self):
         self.bus.write_byte(self.address, 3)
 
-        
+    def LookLeft(self):
+        self.bus.write_byte(self.address, 4)
+
+    def Search(self):
+        self.bus.write_byte(self.address, 5)
 
 ##### Hands ########
     def RaiseRightHand(self):
@@ -40,6 +44,9 @@ class arduino:
 
     def HoldSomethingHands(self):
         self.bus.write_byte(self.address, 53)
+
+    def KifHands(self):
+        self.bus.write_byte(self.address, 54)
 
 ###### Drive #######
     def DriveFw(self):
