@@ -2,6 +2,7 @@ import os
 import dialogflow_v2 as df
 import logging
 from services.actionHandler import actionHandler
+from google.protobuf.json_format import MessageToJson
 
 class dialogflow:
     
@@ -38,7 +39,9 @@ class dialogflow:
             logging.debug('Fulfillment text: {}\n'.format(response.query_result.fulfillment_text))
             res["say"].append(response.query_result.fulfillment_text)
             if response.query_result.all_required_params_present == True and response.query_result.action is not None:
-                res["action"] = '{}|{}'.format(response.query_result.action,response.query_result.parameters)
+	        jsonObj = MessageToJson(response.query_result)
+
+                res["action"] = '{}|{}'.format(response.query_result.action,jsonObj)
                 logging.info(res["action"])
                        
         return res

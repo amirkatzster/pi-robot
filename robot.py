@@ -103,30 +103,26 @@ class robot:
         output_path = self.tts.convert('Shlvm lchvlm n hrvvvt hchdsh shlchm tm rvtzm shnlch lshchk')
         self.play.start(output_path)
 
-    def readTextHeb(self):  
-        output_path = self.htts.convert(unicode('מזל טוב לסתיו המתוקה. וגם יום הולדת אדיר לגפן המקסימה. אני רובוט עץ חבר שלכם מאחל לכן יום הולדת שמח עם המון בלונים שירים גלידה וניל וגלידה שוקולד. שכל משאלות לבכן תתגשמנה. אוהב אותכם המון','utf-8'))
+    #def readTextHeb(self):  
+        #output_path = self.htts.convert(unicode('מזל טוב לסתיו המתוקה. וגם יום הולדת אדיר לגפן המקסימה. אני רובוט עץ חבר שלכם מאחל לכן יום הולדת שמח עם המון בלונים שירים גלידה וניל וגלידה שוקולד. שכל משאלות לבכן תתגשמנה. אוהב אותכם המון','utf-8'))
         #output_path = 'resources/output.mp3'
-        self.play.start(output_path)
-        time.sleep(15)
+        #self.play.start(output_path)
+        #time.sleep(15)
 
     def playSong(self):
-        self.readTextHeb()
-        self.play.start('resources/happybd.mp3')       
+        #self.readTextHeb()
+        self.play.start('resources/morning.mp3')       
         #self.youtube.play_url('https://www.youtube.com/watch?v=NvZtkt9973A')
         self.sayYesNo()
 
     def sayYesNo(self):
         i = 0
-        while i < 10:
-	    print('1')
-            self.arduino.sayYes()
-	    print('2')
+        while i < 100:
+            #self.arduino.sayYes()
             time.sleep(5)
-	    print('3')
-            self.arduino.sayNo()
-            print('4')
-            time.sleep(5)
-            i = i + 1
+            #self.arduino.sayNo()
+            time.sleep(1115)
+            #i = i + 1
 
     
         
@@ -138,8 +134,8 @@ if __name__ == "__main__":
     #robot().testDialogFlow()
     #robot().readText()
     #robot().readTextHeb()
-    #robot().playSong()
+    robot().playSong()
     #robot().sayYesNo()
-    robot().main()
+    #robot().main()
     
     

@@ -14,7 +14,7 @@ class record:
     CHANNELS = 1    
     RATE = 44000
     RATE_WAV = 44000
-    THRESHOLD = 1700  # The threshold intensity that defines silence
+    THRESHOLD = 1800  # The threshold intensity that defines silence
                   # and noise signal (an int. lower than THRESHOLD is silence).
     SILENCE_LIMIT = 2  # Silence limit in seconds. The max ammount of seconds where
                    # only silence is recorded. When this time passes the
@@ -71,7 +71,7 @@ class record:
             slid_win.append(math.sqrt(abs(audioop.avg(cur_data, 4))))
             #print(slid_win[-1])
             #print(sum([x > self.THRESHOLD for x in slid_win]))
-            if(sum([x > self.THRESHOLD for x in slid_win]) > 0):
+            if(sum([x > self.THRESHOLD for x in slid_win]) > 5):
                 if(not started):
                     logging.debug('Starting record of phrase')
                     started = True
