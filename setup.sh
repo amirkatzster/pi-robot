@@ -47,3 +47,18 @@ pip install redis
 
 #OpenCV 4
 #Instructions here: https://www.pyimagesearch.com/2018/09/26/install-opencv-4-on-your-raspberry-pi/
+
+
+*install spotify*
+sudo apt install dirmngr
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A87FF9DF48BF1C90
+echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
+sudo apt update
+sudo apt install ./libssl1.0.0_1.0.2d-1_amd64.deb
+sudo apt install spotify-client
+
+
+*spotify deamon - Then use Spotify Connect
+https://github.com/Spotifyd/spotifyd/releases/tag/v0.2.4
+https://github.com/Spotifyd/spotifyd/wiki/Installing-on-a-Raspberry-Pi
+

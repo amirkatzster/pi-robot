@@ -1,5 +1,6 @@
 from services.arduino import arduino
 from services.light import light
+from services.spotify import spotify
 from colour import Color
 import json
 from google.protobuf.json_format import MessageToJson
@@ -10,6 +11,7 @@ class actionHandler:
     def __init__(self):
         self.arduino = arduino()
 	self.light = light()
+	self.spotify = spotify()
 
 
     def process(self, actionName, params):
@@ -44,8 +46,10 @@ class actionHandler:
 	    print(self.mapColor(c.red),self.mapColor(c.green),self.mapColor(c.blue))
             #self.light.set_hsv(c.hue, c.saturation, c.luminance)
 	    self.light.setColor(self.mapColor(c.red),self.mapColor(c.green),self.mapColor(c.blue))
-
-
+	if actionName == "Sing":
+	    param = json.loads(params)
+	    querySong = param['parameters']['song']
+	    self.spotify.play(querySong) 
 
     def mapColor(self,color):
         return round(interp(color,[0.0,1.0],[1,255]))

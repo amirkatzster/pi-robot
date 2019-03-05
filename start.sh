@@ -1,6 +1,9 @@
 #!/bin/sh
 export PYTHONPATH='/home/pi/git/pi-robot/'
 #export PAFY_BACKEND=internal
+echo  *Starting spotify Client
+systemctl --user start spotifyd.service
+
 cd /home/pi/git/pi-robot/
 
 echo *Starting STT service*
@@ -22,3 +25,4 @@ echo *Starting Record Serivce*
 python microService/recordVoiceService.py &
 
 tail -f logs/*
+
