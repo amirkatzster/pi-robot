@@ -10,8 +10,8 @@ class actionHandler:
 
     def __init__(self):
         self.arduino = arduino()
-	self.light = light()
-	self.spotify = spotify()
+        self.light = light()
+        self.spotify = spotify()
 
 
     def process(self, actionName, params):
@@ -19,37 +19,37 @@ class actionHandler:
             print(actionName)
             print(params)
         if actionName == "SayYes" or actionName == 'smalltalk.confirmation.yes':
-	    self.arduino.sayYes()
+            self.arduino.sayYes()
         if actionName == "SayNo" or actionName == 'smalltalk.confirmation.no':
             self.arduino.sayNo()
-	if actionName == "RaiseRightHand":
-	    self.arduino.RaiseRightHand()
-	if actionName == "LookRight":
-	    self.arduino.send(2)
-	if actionName == "LookLet":
+        if actionName == "RaiseRightHand":
+            self.arduino.RaiseRightHand()
+        if actionName == "LookRight":
+            self.arduino.send(2)
+        if actionName == "LookLet":
             self.arduino.send(3)
-	if actionName == "RaiseLeftHand":
+        if actionName == "RaiseLeftHand":
             self.arduino.send(51)
-	if actionName == "RaiseBothHands":
+        if actionName == "RaiseBothHands":
             self.arduino.send(52)
-	if actionName == "HoldSomethingHands":
+        if actionName == "HoldSomethingHands":
             self.arduino.send(53)
-	if actionName == "TurnLightOn":
+        if actionName == "TurnLightOn":
             self.light.turnOn()
-	if actionName == "TurnLightOff":
-	    self.light.turnOff()
-	if actionName == "TurnLightColor":
-	    param = json.loads(params)
+        if actionName == "TurnLightOff":
+            self.light.turnOff()
+        if actionName == "TurnLightColor":
+            param = json.loads(params)
             c = Color(param['parameters']['color'])
             self.light.turnOn()
             print(c.rgb)
-	    print(self.mapColor(c.red),self.mapColor(c.green),self.mapColor(c.blue))
+            print(self.mapColor(c.red),self.mapColor(c.green),self.mapColor(c.blue))
             #self.light.set_hsv(c.hue, c.saturation, c.luminance)
-	    self.light.setColor(self.mapColor(c.red),self.mapColor(c.green),self.mapColor(c.blue))
-	if actionName == "Sing":
-	    param = json.loads(params)
-	    querySong = param['parameters']['song']
-	    self.spotify.play(querySong) 
+            self.light.setColor(self.mapColor(c.red),self.mapColor(c.green),self.mapColor(c.blue))
+        if actionName == "Sing":
+            param = json.loads(params)
+            querySong = param['parameters']['song']
+            self.spotify.play(querySong) 
 
     def mapColor(self,color):
         return round(interp(color,[0.0,1.0],[1,255]))

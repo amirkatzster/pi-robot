@@ -12,13 +12,13 @@ class arduino:
         self.address = 0x04
 
     def send(self, num):
-	self.bus.write_byte(self.address, num)
+        self.bus.write_byte(self.address, num)
 ##### Head ########
     def sayNo(self):
         #gpio.output(17, True)
         print('going to say no')
         self.bus.write_byte(self.address, 2)
-	print('saying no')
+        print('saying no')
 
     def sayYes(self):
         self.bus.write_byte(self.address, 1)

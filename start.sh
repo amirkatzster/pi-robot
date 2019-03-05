@@ -24,5 +24,8 @@ python microService/actionService.py &
 echo *Starting Record Serivce*
 python microService/recordVoiceService.py &
 
+echo *Start Flask API
+python3 microService/apiService.py &
+
 tail -f logs/*
 
