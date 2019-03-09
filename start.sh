@@ -27,5 +27,8 @@ python microService/recordVoiceService.py &
 echo *Start Flask API
 python3 microService/apiService.py &
 
+echo *Start Web port 3000
+yarn start
+
 tail -f logs/*
 
