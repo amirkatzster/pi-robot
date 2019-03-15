@@ -29,9 +29,9 @@ python3 microService/apiService.py &
 
 echo *Start Web port 3000
 
-pushd web-app
+cd web-app
 yarn start &
-popd
+cd ..
 
 tail -f logs/*
 
