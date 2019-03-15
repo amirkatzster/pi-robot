@@ -28,7 +28,10 @@ echo *Start Flask API
 python3 microService/apiService.py &
 
 echo *Start Web port 3000
-yarn start
+
+pushd web-app
+yarn start &
+popd
 
 tail -f logs/*
 
