@@ -7,20 +7,32 @@
 Servo yesServo;  // create servo object to control a servo
 Servo noServo;
 Servo rArmServo;
+Servo lArmServo;
 
 ///////HEAD Setup ///////
-const int SERVO_NO_DELAY = 800;
-const int SERVO_YES_DELAY = 1000;
+
 const int servoPinYes = 9;
 const int servoPinNo = 6;
 const int servoRightArm = 5;
+const int servoLeftArm = 3;
 int servoStartingAngle = 90;
 int servoOpenAngle = 180;
 ///////////////////////
+//// MOTORS //////////
+const int enA = 0;
+const int enB = 0;
+const int in1 = 7;
+const int in2  = 8;
+const int in3 = 12;
+const int in4  = 13;
+//////////////////////
 int number = 0;
 int action = 0; //1 - sayYes, 2 - sayNo
 
+bool once;
+
 void setup() {
+  once = true;
   Serial.begin(9600);
   // TALK WITH PI ////////
   Wire.begin(SLAVE_ADDRESS);
@@ -31,61 +43,126 @@ void setup() {
 
   ///HEAD ////////////
   yesServo.attach(servoPinYes); 
-  yesServo.write(140);
   noServo.attach(servoPinNo); 
-  noServo.write(95);
   rArmServo.attach(servoRightArm); 
-  rArmServo.write(0);
+  lArmServo.attach(servoLeftArm); 
+  Reset(); 
   ////////////////////
+
+  ///MOTORS//////////
+  pinMode(enA, OUTPUT);
+  pinMode(enB, OUTPUT);
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+  pinMode(in3, OUTPUT);
+  pinMode(in4, OUTPUT);
+  //////////////////
+}
+
+void Reset() {
+  /// Head ///
+   yesServo.write(140);
+   noServo.write(95);
+   rArmServo.write(20);
+   lArmServo.write(180);
+   /// Wheels ///
+   digitalWrite(in1, LOW);
+   digitalWrite(in2, LOW);
+   digitalWrite(in3, LOW);
+   digitalWrite(in4, LOW);
 }
 
 
 
 void loop() { 
- delay(100);
- SayNo();
- delay(100);
- MoveRightArm();
- switch (action) {
+  /*
+  if (Serial.available() > 0) {
+    char income = Serial.read(); // read the incoming byte:
+    Serial.print(" I received char:");
+    Serial.print(income);
+    action = atoi(&income);
+    //action = income;
+    Serial.print(" I received:");
+    Serial.println(action);
+  }
+  */
+ 
+ 
+ if (once) {
+  once = false;
+  LookRight();
+  RaiseRightHand();
+  RaiseLeftHand();  
+ }
+ if (action > 0)  {
+  Serial.print(" I received:");
+  Serial.println(action);
+  commitAction(action);
+  action = -1;
+ }
+ 
+}
+
+void commitAction(int action) {
+  switch (action) {
+    case 0:
+      Reset();
+      break;
     case 1:
       SayYes();
-      action = 0;
       break;
     case 2:
       SayNo();
-      action = 0;
+      break;
+    case 3:
+      LookRight();
+      break;
+    case 4:
+      LookLeft();
+      break;
+    case 5:
+      Search();
+      break;
+    case 50:
+      RaiseRightHand();   
+      break;
+    case 51:
+      RaiseLeftHand();
+      break;
+    case 52:
+      RaiseBothHands();
+      break;
+    case 53:
+      HoldSomethingHands();
+      break;
+    case 54:
+      KifHands();
+      break;
+    case 71:
+      MoveFw();
+      break;
+    case 72:
+      MoveBw();
+      break;
+    case 73:
+      TurnRight();
+      break;
+    case 74:
+      TurnLeft();
       break;
     default:
       break;
   }
 }
 
-void MoveRightArm()
-{
-   rArmServo.write(0); 
-   delay(1000); 
-   rArmServo.write(180); 
-   delay(1000); 
-   rArmServo.write(90); 
-   delay(1000);
-}
 
 
 void receiveData(int byteCount) {
-  Serial.print("receiveData");
+  Serial.print("receiveData: ");
   while (Wire.available()) {
     number = Wire.read();
-    Serial.print("data received: ");
     Serial.println(number);
-    if (number == 1) {
-      Serial.println("Say yes");
-      action = 1;
-      delay(2000);
-    } else {
-      Serial.println("Say no");
-      action = 2;
-      delay(2000);
-    }
+    action = number;
   }
 }
 void sendData() {
@@ -94,29 +171,6 @@ void sendData() {
   Wire.write(number);
 }
 
-void SayYes()
-{
-   yesServo.write(160); 
-   delay(SERVO_YES_DELAY); 
-   yesServo.write(130); 
-   delay(SERVO_YES_DELAY); 
-   yesServo.write(160); 
-   delay(SERVO_YES_DELAY);
-   yesServo.write(140);
-   delay(SERVO_YES_DELAY);
-}
-
-void SayNo()
-{
-   noServo.write(160); 
-   delay(SERVO_NO_DELAY); 
-   noServo.write(50); 
-   delay(SERVO_NO_DELAY); 
-   noServo.write(160); 
-   delay(SERVO_NO_DELAY);
-   noServo.write(95);
-   delay(SERVO_NO_DELAY);
-}
 
 
 
