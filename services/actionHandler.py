@@ -50,6 +50,14 @@ class actionHandler:
             param = json.loads(params)
             querySong = param['parameters']['song']
             self.spotify.play(querySong) 
+        if actionName == "MoveFw":
+            self.arduino.send(71)
+        if actionName == "MoveBw":
+            self.arduino.send(72)
+        if actionName == "TurnRight":
+            self.arduino.send(73)
+        if actionName == "TurnLeft":
+            self.arduino.send(74)
 
     def mapColor(self,color):
         return round(interp(color,[0.0,1.0],[1,255]))

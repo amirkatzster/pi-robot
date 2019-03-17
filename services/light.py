@@ -5,7 +5,7 @@ from yeelight import Bulb
 class light:
     
     def __init__(self):
-        self.bulb = Bulb("192.168.0.102")
+        self.bulb = Bulb("192.168.0.101")
         print(1)
     
     def setColor(self,red,green,blue):
@@ -23,7 +23,7 @@ class light:
     def start(self):
         print(2)
         #print(discover_bulbs())
-        bulb = Bulb("192.168.0.102")
+        bulb = Bulb("192.168.0.101")
         for r in range(1,256,40):
             for g in range(1,256,40):
                 for b in range(1,256,40):
