@@ -11,20 +11,20 @@ Servo lArmServo;
 
 ///////HEAD Setup ///////
 
-const int servoPinYes = 9;
-const int servoPinNo = 6;
-const int servoRightArm = 5;
-const int servoLeftArm = 3;
+const int servoPinYes = 5;
+const int servoPinNo = 4;
+const int servoRightArm = 3;
+const int servoLeftArm = 2;
 int servoStartingAngle = 90;
 int servoOpenAngle = 180;
 ///////////////////////
 //// MOTORS //////////
-const int enA = 0;
-const int enB = 0;
-const int in1 = 7;
-const int in2  = 8;
-const int in3 = 12;
-const int in4  = 13;
+const int enA = 6;
+const int enB = 7;
+const int in1 = 22;
+const int in2  = 24;
+const int in3 = 26;
+const int in4  = 28;
 //////////////////////
 int number = 0;
 int action = 0; //1 - sayYes, 2 - sayNo
@@ -139,16 +139,19 @@ void commitAction(int action) {
       KifHands();
       break;
     case 71:
-      MoveFw();
+      MoveFw(155);
       break;
     case 72:
-      MoveBw();
+      MoveBw(155);
       break;
     case 73:
-      TurnRight();
+      TurnRight(155);
       break;
     case 74:
-      TurnLeft();
+      TurnLeft(155);
+      break;
+    case 75:
+      Stop();
       break;
     default:
       break;

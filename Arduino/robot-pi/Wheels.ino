@@ -1,46 +1,48 @@
 
 
-void TurnRight()
+void TurnLeft(int speed)
 {
+   SetSpeed(speed);
    digitalWrite(in1, LOW);
    digitalWrite(in2, HIGH);
-   delay(2000);
-   digitalWrite(in1, LOW);
-   digitalWrite(in2, LOW);
 }
 
 
-void TurnLeft()
+void TurnRight(int speed)
 {
+   SetSpeed(speed);
    digitalWrite(in3, HIGH);
    digitalWrite(in4, LOW);
-   delay(2000);
-   digitalWrite(in3, LOW);
-   digitalWrite(in4, LOW);
 }
 
-void MoveFw()
+void MoveFw(int speed)
 {
+   SetSpeed(speed);
    digitalWrite(in3, HIGH);
    digitalWrite(in4, LOW);
    digitalWrite(in1, LOW);
    digitalWrite(in2, HIGH);
-   delay(2000);
-   digitalWrite(in3, LOW);
-   digitalWrite(in4, LOW);
-   digitalWrite(in1, LOW);
-   digitalWrite(in2, LOW);
 }
 
-void MoveBw()
+void MoveBw(int speed)
 {
+   SetSpeed(speed);
    digitalWrite(in3, LOW);
    digitalWrite(in4, HIGH);
    digitalWrite(in1, HIGH);
    digitalWrite(in2, LOW);
-   delay(2000);
+}
+
+void Stop()
+{
    digitalWrite(in3, LOW);
    digitalWrite(in4, LOW);
    digitalWrite(in1, LOW);
    digitalWrite(in2, LOW);
 }
+
+void SetSpeed(int speed) {
+   analogWrite(enA, speed);
+   analogWrite(enB, speed);
+}
+
