@@ -36,11 +36,14 @@ class recordVoiceService:
         
     def run(self): 
         while (self.shouldRecord):     
-            logging.info('---starting to record---')
-            outputPath = self.record.record_by_silence()
-            logging.info('---done recording---')
-            channel = self.queue.createChannel()
-            channel.basic_publish(self.EXCHANGE_NAME,'speachToTextService',outputPath)
+            try:
+                logging.info('---starting to record---')
+                outputPath = self.record.record_by_silence()
+                logging.info('---done recording---')
+                channel = self.queue.createChannel()
+                channel.basic_publish(self.EXCHANGE_NAME,'speachToTextService',outputPath)
+            except Exception as e:
+                logging.error(e)
 
 
 

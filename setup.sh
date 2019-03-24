@@ -62,3 +62,5 @@ sudo apt install spotify-client
 https://github.com/Spotifyd/spotifyd/releases/tag/v0.2.4
 https://github.com/Spotifyd/spotifyd/wiki/Installing-on-a-Raspberry-Pi
 
+# Install MJPG-Streamer
+#https://blog.miguelgrinberg.com/post/how-to-build-and-run-mjpg-streamer-on-the-raspberry-pi

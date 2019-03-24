@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
+import ReactPlayer from 'react-player'
 
 class App extends Component {
 
@@ -36,6 +37,8 @@ class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
+	    
+	    <img src='http://192.168.0.103:8081/?action=stream' width='300' height='200' />
             בוב
           </p>
 	  <form onSubmit={this.handleSubmit}>
@@ -75,7 +78,10 @@ class App extends Component {
 	       ימינה
       </Button>
       <Button onClick={() => this.action('TurnLeft')} variant="contained" color="primary">
-	       שמאלה
+	    שמאל
+      </Button>
+      <Button onClick={() => this.action('Stop')} variant="contained" color="primary">
+	    עצור
       </Button>
         </header>
         

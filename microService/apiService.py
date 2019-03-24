@@ -29,10 +29,11 @@ class sayService(Resource):
     QUEUE_NAME = 'HebTextToSpeachService'
 
     def get(self, text):
-        print(text)
+        uni_text = text.encode('utf-8')
+        print(uni_text)
         self.queue = queue()
         channel = self.queue.createChannel()
-        channel.basic_publish(self.EXCHANGE_NAME,self.QUEUE_NAME,text)
+        channel.basic_publish(self.EXCHANGE_NAME,self.QUEUE_NAME,uni_text)
 
     
 

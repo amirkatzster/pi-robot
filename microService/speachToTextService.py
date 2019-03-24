@@ -29,7 +29,7 @@ class speachToTextService:
        
         
     def run(self):
-        while true:
+        while True:
             try:
                 print(' [*] Waiting for messages. To exit press CTRL+C')
                 self.channel.start_consuming()

@@ -58,6 +58,11 @@ class actionHandler:
             self.arduino.send(73)
         if actionName == "TurnLeft":
             self.arduino.send(74)
+        if actionName == "Stop":
+            self.arduino.send(75)
+        if actionName == "Test":
+            self.arduino.send(256)
+            
 
     def mapColor(self,color):
         return round(interp(color,[0.0,1.0],[1,255]))

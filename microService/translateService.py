@@ -35,9 +35,13 @@ class translateService:
         
         
     def run(self):
-        print(' [*] Waiting for messages. To exit press CTRL+C')
-        self.channel.start_consuming()
-        
+        while True:
+            try:
+                print(' [*] Waiting for messages. To exit press CTRL+C')
+                self.channel.start_consuming()
+            except Exception as e:
+                logging.error(e)
+                
 
     def callback_h2e(self, ch, method, properties, body):
         cacheKey = 'H2E|{}'.format(body)

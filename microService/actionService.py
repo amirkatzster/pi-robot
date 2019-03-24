@@ -25,8 +25,12 @@ class actionService:
         self.actionHandler = actionHandler()
         
     def run(self):
-        print(' [*] Waiting for messages. To exit press CTRL+C')
-        self.channel.start_consuming()
+        while True:
+            try:
+                print(' [*] Waiting for messages. To exit press CTRL+C')
+                self.channel.start_consuming()
+            except Exception as e:
+                logging.error(e)
         
 
     def callback(self, ch, method, properties, body):
