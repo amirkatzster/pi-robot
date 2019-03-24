@@ -9,3 +9,4 @@ resources/*
 .vscode/.ropeproject/config.py
 .cache-*
 yarn-error.log
+web-app/src/.App.js.*
