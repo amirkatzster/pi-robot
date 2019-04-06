@@ -1,6 +1,7 @@
 
 #include <Servo.h>
 #include <Wire.h>
+#include <TM1637Display.h>
 #define SLAVE_ADDRESS 0x04
 
 
@@ -9,26 +10,10 @@ Servo noServo;
 Servo rArmServo;
 Servo lArmServo;
 
-///////HEAD Setup ///////
 
-const int servoPinYes = 5;
-const int servoPinNo = 4;
-const int servoRightArm = 3;
-const int servoLeftArm = 2;
-int servoStartingAngle = 90;
-int servoOpenAngle = 180;
-///////////////////////
-//// MOTORS //////////
-const int enA = 6;
-const int enB = 7;
-const int in1 = 22;
-const int in2  = 24;
-const int in3 = 26;
-const int in4  = 28;
-//////////////////////
+
 int number = 0;
 int action = 0; //1 - sayYes, 2 - sayNo
-
 bool once;
 
 void setup() {
@@ -41,22 +26,11 @@ void setup() {
   Serial.println("Ready!");
   /////////////////////
 
-  ///HEAD ////////////
-  yesServo.attach(servoPinYes); 
-  noServo.attach(servoPinNo); 
-  rArmServo.attach(servoRightArm); 
-  lArmServo.attach(servoLeftArm); 
-  Reset(); 
-  ////////////////////
-
-  ///MOTORS//////////
-  pinMode(enA, OUTPUT);
-  pinMode(enB, OUTPUT);
-  pinMode(in1, OUTPUT);
-  pinMode(in2, OUTPUT);
-  pinMode(in3, OUTPUT);
-  pinMode(in4, OUTPUT);
-  //////////////////
+  headInit();
+  wheelsInit();
+  buttonsInit();
+  ledsInit();
+ 
 }
 
 void Reset() {
@@ -66,33 +40,18 @@ void Reset() {
    rArmServo.write(20);
    lArmServo.write(180);
    /// Wheels ///
-   digitalWrite(in1, LOW);
-   digitalWrite(in2, LOW);
-   digitalWrite(in3, LOW);
-   digitalWrite(in4, LOW);
+   wheelsReset();
 }
 
 
 
 void loop() { 
-  /*
-  if (Serial.available() > 0) {
-    char income = Serial.read(); // read the incoming byte:
-    Serial.print(" I received char:");
-    Serial.print(income);
-    action = atoi(&income);
-    //action = income;
-    Serial.print(" I received:");
-    Serial.println(action);
-  }
-  */
- 
  
  if (once) {
   once = false;
-  LookRight();
-  RaiseRightHand();
-  RaiseLeftHand();  
+//  LookRight();
+//  RaiseRightHand();
+//  RaiseLeftHand();  
  }
  if (action > 0)  {
   Serial.print(" I received:");
@@ -100,8 +59,12 @@ void loop() {
   commitAction(action);
   action = -1;
  }
- 
+ readButton();
+ ledsLoop();
 }
+
+
+
 
 void commitAction(int action) {
   switch (action) {
@@ -139,16 +102,16 @@ void commitAction(int action) {
       KifHands();
       break;
     case 71:
-      MoveFw(155);
+      MoveFw(240);
       break;
     case 72:
-      MoveBw(155);
+      MoveBw(240);
       break;
     case 73:
-      TurnRight(155);
+      TurnRight(255);
       break;
     case 74:
-      TurnLeft(155);
+      TurnLeft(255);
       break;
     case 75:
       Stop();

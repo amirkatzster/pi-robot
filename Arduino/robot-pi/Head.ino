@@ -1,5 +1,25 @@
+
+///////HEAD Setup ///////
+const int servoPinYes = 5;
+const int servoPinNo = 4;
+const int servoRightArm = 3;
+const int servoLeftArm = 2;
+int servoStartingAngle = 90;
+int servoOpenAngle = 180;
+///////////////////////
+
 const int SERVO_NO_DELAY = 800;
 const int SERVO_YES_DELAY = 1200;
+
+void headInit() {
+  ///HEAD ////////////
+  yesServo.attach(servoPinYes); 
+  noServo.attach(servoPinNo); 
+  rArmServo.attach(servoRightArm); 
+  lArmServo.attach(servoLeftArm); 
+  Reset(); 
+  ////////////////////
+}
 
 void SayYes()
 {
