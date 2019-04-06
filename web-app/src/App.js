@@ -3,7 +3,6 @@ import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
-import ReactPlayer from 'react-player'
 
 class App extends Component {
 
@@ -21,19 +20,30 @@ class App extends Component {
   }
 
   handleSubmit(event) {
-	event.preventDefault();
-	axios.get('http://'+ window.location.hostname +':8080/say/' + this.state.value)
+  event.preventDefault();
+  var domain = window.location.hostname;
+    if (window.location.hostname === 'localhost') {
+      domain = "192.168.0.103";
+    }
+	axios.get('http://'+ domain +':8080/say/' + this.state.value)
 	  .then(res => console.log(res));	
   }
 
   action(actionName) {
-	  console.log(window.location.hostname);
-	  axios.get('http://' + window.location.hostname +':8080/action/' + actionName + '%7C')
+    console.log(window.location.hostname);
+    var domain = window.location.hostname;
+    if (window.location.hostname === 'localhost') {
+      domain = "192.168.0.103";
+    }
+	  axios.get('http://' + domain +':8080/action/' + actionName + '%7C')
 	  .then(res => console.log(res));	
   }
   
   liveCam() {
-	 return 'http://' + window.location.hostname + ':8081/?action=stream';
+    if (window.location.hostname === 'localhost') {
+      return "resources/pic.jpg";
+    }
+	  return 'http://' + window.location.hostname + ':8081/?action=stream';
   }
 
   render() {
@@ -42,8 +52,7 @@ class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-	    
-	    <img src={this.liveCam()} width='300' height='200' />
+	        <img src={this.liveCam()} alt="cam" width='300' height='200' />
             בוב
           </p>
 	  <form onSubmit={this.handleSubmit}>
