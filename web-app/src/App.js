@@ -22,13 +22,18 @@ class App extends Component {
 
   handleSubmit(event) {
 	event.preventDefault();
-	axios.get('http://192.168.0.103:8080/say/' + this.state.value)
+	axios.get('http://'+ window.location.hostname +':8080/say/' + this.state.value)
 	  .then(res => console.log(res));	
   }
 
   action(actionName) {
-	  axios.get('http://192.168.0.103:8080/action/' + actionName + '%7C')
+	  console.log(window.location.hostname);
+	  axios.get('http://' + window.location.hostname +':8080/action/' + actionName + '%7C')
 	  .then(res => console.log(res));	
+  }
+  
+  liveCam() {
+	 return 'http://' + window.location.hostname + ':8081/?action=stream';
   }
 
   render() {
@@ -38,7 +43,7 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <p>
 	    
-	    <img src='http://192.168.0.103:8081/?action=stream' width='300' height='200' />
+	    <img src={this.liveCam()} width='300' height='200' />
             בוב
           </p>
 	  <form onSubmit={this.handleSubmit}>
