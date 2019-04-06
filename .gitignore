@@ -10,3 +10,4 @@ resources/*
 .cache-*
 yarn-error.log
 web-app/src/.App.js.*
+web-app/public/resources/*
