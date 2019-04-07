@@ -6,6 +6,8 @@
     "@material-ui/core": "^3.9.2",
     "axios": "^0.18.0",
     "react": "^16.8.4",
+    "react-burger-menu": "^2.6.8",
+    "react-device-detect": "^1.6.2",
     "react-dom": "^16.8.4",
     "react-player": "^1.9.3",
     "react-scripts": "2.1.8"
