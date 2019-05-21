@@ -14,37 +14,43 @@ class MobileApp extends Component {
         this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
       this.action = this.action.bind(this);
+      this.domain = this.getDomain();
     }
   
     handleChange(event) {
             this.setState({value: event.target.value});
     }
+
+    isDev() {
+        if (window.location.hostname === 'localhost' || window.location.hostname == '192.168.0.104') {
+          return true;
+        }
+        return false;
+    }
+    getDomain() {
+        var domain = window.location.hostname;
+        if (this.isDev()) {
+          domain = "192.168.0.103";
+        }
+        return domain;
+    }
   
     handleSubmit(event) {
     event.preventDefault();
-    var domain = window.location.hostname;
-      if (window.location.hostname === 'localhost') {
-        domain = "192.168.0.103";
-      }
-      axios.get('http://'+ domain +':8080/say/' + this.state.value)
+      axios.get('http://'+ this.domain +':8080/say/' + this.state.value)
         .then(res => console.log(res));	
     }
   
     action(actionName) {
-      console.log(window.location.hostname);
-      var domain = window.location.hostname;
-      if (window.location.hostname === 'localhost') {
-        domain = "192.168.0.103";
-      }
-        axios.get('http://' + domain +':8080/action/' + actionName + '%7C')
+        axios.get('http://' + this.domain +':8080/action/' + actionName + '%7C')
         .then(res => console.log(res));	
     }
     
     liveCam() {
-      if (window.location.hostname === 'localhost') {
+      if (this.isDev()) {
         return "resources/pic.jpg";
       }
-        return 'http://' + window.location.hostname + ':8081/?action=stream';
+        return 'http://' + this.domain + ':8081/?action=stream';
     }
 
     showSettings (event) {
@@ -73,6 +79,9 @@ class MobileApp extends Component {
                     </Button>
                     <Button style={{position:'absolute',top:150,left:0}}  onClick={() => this.action('TurnLeft')} variant="contained" color="primary">
                     ⇦  
+                    </Button>
+                    <Button style={{position:'absolute',top:150,left:280}}  onClick={() => this.action('Stop')} variant="contained" color="primary">
+                    ⏹  
                     </Button>
                 </main>
             </div>
