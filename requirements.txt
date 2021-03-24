@@ -70,7 +70,7 @@ rainbowhat==0.1.0
 requests==2.20.0
 requests-oauthlib==0.7.0
 RPi.GPIO==0.6.3
-rsa==4.0
+rsa==4.1
 scrollphat==0.0.7
 scrollphathd==1.2.1
 SecretStorage==2.3.1
