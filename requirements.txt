@@ -1,4 +1,4 @@
-setuptools==34.0.0
+setuptools==65.5.1
 automationhat==0.1.0
 beautifulsoup4==4.6.3
 blinker==1.3
